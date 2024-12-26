@@ -24,7 +24,24 @@ module Google
       end
 
       def execute
+        result = document
+
         { artworks: [] }
+      end
+
+      private
+
+      def document
+        return unless html_page
+
+        @document ||= Nokogiri::HTML(html_page.read)
+      end
+
+      def html_page
+        html_full_path = File.join(INPUT_DIR, html_path)
+        File.open(html_full_path, "r")
+      rescue StandardError
+        raise SerpapiChallenge::ArtistError
       end
     end
   end
