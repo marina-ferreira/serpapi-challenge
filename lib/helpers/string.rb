@@ -8,5 +8,9 @@ module Helpers
 
       str.strip.squeeze(" ").gsub("\n", "")
     end
+
+    def self.parameterize(str)
+      str.downcase.gsub(" ", "-")
+    end
   end
 end
