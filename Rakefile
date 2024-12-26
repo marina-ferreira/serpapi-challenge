@@ -10,3 +10,5 @@ require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
 task default: %i[spec rubocop]
+
+Dir["#{File.dirname(__FILE__)}/lib/tasks/*.rake"].each { |rake_file| load rake_file }
