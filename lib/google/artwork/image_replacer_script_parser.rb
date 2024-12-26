@@ -2,7 +2,6 @@ module Google
   module Artwork
     class ImageReplacerScriptParser
       IMAGE_REPLACER_SCRIPT_TAG = "_setImagesSrc"
-      # IMAGE_DATA_REGEX = /s ="(.*?)";.*?var ii = \["(.*?)"/
       IMAGE_DATA_REGEX = /s='(.*?)';.*?var ii=\['(.*?)'\]/
       BASE64_PADDING_HEX_REGEX = /\\x3d/
       BASE64_PADDING = "="

@@ -5,6 +5,8 @@ require "fileutils"
 require "logger"
 
 require_relative "./parser"
+require_relative "./image_replacer_script_parser"
+require_relative "../../serpapi_challenge"
 
 module Google
   module Artwork
@@ -26,7 +28,7 @@ module Google
         new(html_path).execute
       end
 
-      def execute(artwork_parser: Parser)
+      def execute(artwork_parser: Parser, image_replacer_script_parser: ImageReplacerScriptParser)
         raise SerpapiChallenge::HTMLError unless document
         raise SerpapiChallenge::HTMLError unless artworks
 
@@ -34,19 +36,25 @@ module Google
 
         raise SerpapiChallenge::HTMLError if artwork_links&.empty?
 
+        image_mapping = image_replacer_script_parser.parse(document)
+
         artworks = artwork_links.map do |artwork_link|
           data = artwork_parser.parse(artwork_link)
+          image = image_mapping[data[:image_id]] || data[:image_url]
+
+          next unless data[:title] && data[:link] && image
 
           {
             title: data[:title],
             extensions: data[:extensions],
-            link: data[:link]
+            link: data[:link],
+            image:
           }.compact
         rescue StandardError => e
           logger.error(e.message)
           logger.info(artwork_link)
           raise
-        end
+        end.compact
 
         { artworks: }
       end
@@ -74,5 +82,3 @@ module Google
     end
   end
 end
-
-pp Google::Artwork::Crawler.execute("van-gogh-paintings.html")

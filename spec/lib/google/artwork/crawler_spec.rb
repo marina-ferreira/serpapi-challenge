@@ -2,20 +2,19 @@
 
 ARTIST_HTML_FILE_PATH = "van-gogh-paintings.html"
 
-require "pry"
-
 RSpec.describe Google::Artwork::Crawler do
   describe "#execute" do
     subject(:result) { described_class.new(ARTIST_HTML_FILE_PATH).execute }
 
     it "should return the correct shape" do
-      artwork = result[:artworks].first
-
       expect(result[:artworks]).to be_an(Array)
 
-      expect(artwork[:title]).to be_an(String)
-      expect(artwork[:link]).to be_an(String)
-      expect(artwork[:extensions]).to be_an(Array)
+      result[:artworks].each do |artwork|
+        expect(artwork[:title]).to be_a(String)
+        expect(artwork[:link]).to be_a(String)
+        expect(artwork[:image]).to be_a(String)
+        expect(artwork[:extensions]).to be_an(Array) if artwork.key?(:extensions)
+      end
     end
 
     context "when file does not exist" do

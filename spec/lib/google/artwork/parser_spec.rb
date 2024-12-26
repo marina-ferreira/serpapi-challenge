@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "pry"
-
 ARTIST_HTML_FILE_PATH = "van-gogh-paintings.html"
 ARTWORK_WITH_YEAR_TITLE = "Mulberry Tree"
 ARTWORK_WITHOUT_BASE64_TITLE = "Bedroom in Arles"
@@ -23,9 +21,9 @@ RSpec.describe Google::Artwork::Parser do
     subject(:result) { described_class.parse(artwork_link) }
 
     it "should return the correct shape" do
-      expect(result[:title]).to be_an(String)
-      expect(result[:link]).to be_an(String)
-      expect(result[:image_id]).to be_an(String)
+      expect(result[:title]).to be_a(String)
+      expect(result[:link]).to be_a(String)
+      expect(result[:image_id]).to be_a(String)
       expect(result[:extensions]).to be_an(Array)
     end
 
@@ -41,7 +39,7 @@ RSpec.describe Google::Artwork::Parser do
       subject(:result) { described_class.parse(artwork_link_without_base64_image) }
 
       it "should fallback to image url" do
-        expect(result[:image_url]).to be_an(String)
+        expect(result[:image_url]).to be_a(String)
       end
     end
   end
