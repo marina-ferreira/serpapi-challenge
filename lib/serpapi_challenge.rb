@@ -8,11 +8,11 @@ require_relative "google/artwork/image_replacer_script_parser"
 require_relative "helpers"
 
 module SerpapiChallenge
+  # Base error class for all SerpApi Challenge specific errors.
+  # Provides common error handling functionality including error codes
+  # and formatted error messages.
   class BaseError < StandardError
     ERROR_CODE = 400
-    def initialize
-      super
-    end
 
     def description
       "Something went wrong. Please, try again."
@@ -23,21 +23,15 @@ module SerpapiChallenge
     end
   end
 
+  # Error raised when required HTML elements are not found during parsing
   class HTMLError < BaseError
-    def initialize
-      super
-    end
-
     def description
       "HTML Element not found"
     end
   end
 
+  # Error raised when an artist's information cannot be found
   class ArtistError < BaseError
-    def initialize
-      super
-    end
-
     def description
       "Artist not found"
     end

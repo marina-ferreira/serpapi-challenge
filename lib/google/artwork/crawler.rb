@@ -10,10 +10,11 @@ require_relative "../../serpapi_challenge"
 
 module Google
   module Artwork
+    # Crawls and parses artwork information from Google search result HTML pages.
     class Crawler
       INPUT_DIR = "files"
       LOGS_DIR = "log"
-      LOGS_PATH = "#{LOGS_DIR}/crawler.log"
+      LOGS_PATH = "#{LOGS_DIR}/crawler.log".freeze
       ARTWORK_GRID_SELECTOR = '[data-attrid="kc:/visual_art/visual_artist:works"]'
 
       attr_reader :html_path, :logger

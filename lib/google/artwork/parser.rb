@@ -1,27 +1,31 @@
+# frozen_string_literal: true
+
+#
 require_relative "../../helpers"
 
 module Google
   module Artwork
+    # Parses artwork details from Google elements for extracting main information
     class Parser
       LINK_URL_PREFIX = "https://www.google.com"
       TITLE_SELECTOR = ".pgNMRc"
       YEAR_SELECTOR = ".cxzHyb"
 
-      attr_reader :carousel_artwork
+      attr_reader :artwork
 
-      def initialize(carousel_artwork)
-        @carousel_artwork = carousel_artwork
+      def initialize(artwork)
+        @artwork = artwork
       end
 
-      def self.parse(carousel_artwork)
-        new(carousel_artwork).parse
+      def self.parse(artwork)
+        new(artwork).parse
       end
 
       def parse
-        return {} if carousel_artwork&.blank?
+        return {} if artwork&.blank?
 
-        title = Helpers::String.sanitize(carousel_artwork.css(TITLE_SELECTOR)&.text)
-        href = carousel_artwork.attr("href")
+        title = Helpers::String.sanitize(artwork.css(TITLE_SELECTOR)&.text)
+        href = artwork.attr("href")
         link = "#{LINK_URL_PREFIX}#{href}"
         image_id, image_url = parse_image.values_at(:image_id, :image_url)
 
@@ -31,7 +35,7 @@ module Google
       private
 
       def parse_image
-        image = carousel_artwork.css("img")
+        image = artwork.css("img")
         image_id = image.attr("id")&.value
         image_url = image.attr("data-key")&.value || image.attr("data-src")&.value
 
@@ -40,7 +44,7 @@ module Google
 
       def parse_extensions
         extensions = []
-        year = Helpers::String.sanitize(carousel_artwork.css(YEAR_SELECTOR)&.text)
+        year = Helpers::String.sanitize(artwork.css(YEAR_SELECTOR)&.text)
         extensions << year unless year.empty?
       end
     end

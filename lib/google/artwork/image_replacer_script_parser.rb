@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Google
   module Artwork
+    # Parses HTML documents to extract image replacement data from scripts.
     class ImageReplacerScriptParser
       IMAGE_REPLACER_SCRIPT_TAG = "_setImagesSrc"
       IMAGE_DATA_REGEX_1 = /s.=."(.*?)".*?var ii.=.\[."(.*?)"/
