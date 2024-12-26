@@ -1,1 +1,1 @@
-require_relative "helpers/sanitize_str"
+require_relative "helpers/string"
