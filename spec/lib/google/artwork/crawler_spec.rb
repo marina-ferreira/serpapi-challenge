@@ -9,7 +9,13 @@ RSpec.describe Google::Artwork::Crawler do
     subject(:result) { described_class.new(ARTIST_HTML_FILE_PATH).execute }
 
     it "should return the correct shape" do
+      artwork = result[:artworks].first
+
       expect(result[:artworks]).to be_an(Array)
+
+      expect(artwork[:title]).to be_an(String)
+      expect(artwork[:link]).to be_an(String)
+      expect(artwork[:extensions]).to be_an(Array)
     end
 
     context "when file does not exist" do

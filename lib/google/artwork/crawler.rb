@@ -4,6 +4,8 @@ require "nokogiri"
 require "fileutils"
 require "logger"
 
+require_relative "./parser"
+
 module Google
   module Artwork
     class Crawler
@@ -24,7 +26,7 @@ module Google
         new(html_path).execute
       end
 
-      def execute
+      def execute(artwork_parser: Parser)
         raise SerpapiChallenge::HTMLError unless document
         raise SerpapiChallenge::HTMLError unless artworks
 
@@ -32,7 +34,21 @@ module Google
 
         raise SerpapiChallenge::HTMLError if artwork_links&.empty?
 
-        { artworks: [] }
+        artworks = artwork_links.map do |artwork_link|
+          data = artwork_parser.parse(artwork_link)
+
+          {
+            title: data[:title],
+            extensions: data[:extensions],
+            link: data[:link]
+          }.compact
+        rescue StandardError => e
+          logger.error(e.message)
+          logger.info(artwork_link)
+          raise
+        end
+
+        { artworks: }
       end
 
       private
@@ -58,3 +74,5 @@ module Google
     end
   end
 end
+
+pp Google::Artwork::Crawler.execute("van-gogh-paintings.html")
