@@ -2,7 +2,8 @@ module Google
   module Artwork
     class ImageReplacerScriptParser
       IMAGE_REPLACER_SCRIPT_TAG = "_setImagesSrc"
-      IMAGE_DATA_REGEX = /s='(.*?)';.*?var ii=\['(.*?)'\]/
+      IMAGE_DATA_REGEX_1 = /s.=."(.*?)".*?var ii.=.\[."(.*?)"/
+      IMAGE_DATA_REGEX_2 = /s='(.*?)';.*?var ii=\['(.*?)'\]/
 
       attr_reader :document
 
@@ -17,7 +18,10 @@ module Google
       def parse
         return {} if image_replacer_script.empty?
 
-        image_replacer_script.scan(IMAGE_DATA_REGEX).each_with_object({}) do |match, acc|
+        image_data = image_replacer_script.scan(IMAGE_DATA_REGEX_1)
+        image_data = image_replacer_script.scan(IMAGE_DATA_REGEX_2) if image_data.empty?
+
+        image_data.each_with_object({}) do |match, acc|
           image_base64_str, image_id = match
           acc[image_id] = Helpers::Base64.sanitize(image_base64_str)
         end
