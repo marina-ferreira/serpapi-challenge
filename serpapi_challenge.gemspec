@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "SerpApi Code Challenge"
   spec.homepage = "https://github.com/marina-ferreira/serpapi-challenge"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.2.2"
 
   spec.metadata["allowed_push_host"] = "Set to your gem server 'https://example.com'"
 
