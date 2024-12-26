@@ -10,6 +10,7 @@ module Google
       INPUT_DIR = "files"
       LOGS_DIR = "log"
       LOGS_PATH = "#{LOGS_DIR}/crawler.log"
+      ARTWORK_GRID_SELECTOR = '[data-attrid="kc:/visual_art/visual_artist:works"]'
 
       attr_reader :html_path, :logger
 
@@ -25,6 +26,7 @@ module Google
 
       def execute
         raise SerpapiChallenge::HTMLError unless document
+        raise SerpapiChallenge::HTMLError unless artworks
 
         { artworks: [] }
       end
@@ -35,6 +37,12 @@ module Google
         return unless html_page
 
         @document ||= Nokogiri::HTML(html_page.read)
+      end
+
+      def artworks
+        return unless document
+
+        @artworks ||= document.css(ARTWORK_GRID_SELECTOR).first
       end
 
       def html_page
