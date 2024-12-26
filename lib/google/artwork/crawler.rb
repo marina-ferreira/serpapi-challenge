@@ -53,7 +53,6 @@ module Google
         rescue StandardError => e
           logger.error(e.message)
           logger.info(artwork_link)
-          raise
         end.compact
 
         { artworks: }
