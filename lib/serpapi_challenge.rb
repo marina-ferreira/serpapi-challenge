@@ -4,6 +4,7 @@ require_relative "serpapi_challenge/version"
 
 require_relative "google/artwork/crawler"
 require_relative "google/artwork/parser"
+require_relative "google/artwork/image_replacer_script_parser"
 require_relative "helpers"
 
 module SerpapiChallenge
