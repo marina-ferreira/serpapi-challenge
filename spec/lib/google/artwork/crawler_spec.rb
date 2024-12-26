@@ -21,8 +21,8 @@ RSpec.describe Google::Artwork::Crawler do
     end
 
     context "when file is not readable" do
-      before { allow_any_instance_of(described_class).to receive(:document).and_return(nil) }
       subject(:result) { described_class.new(ARTIST_HTML_FILE_PATH).execute }
+      before { allow_any_instance_of(described_class).to receive(:document).and_return(nil) }
 
       it "should raise an error" do
         expect { result }.to raise_error(SerpapiChallenge::HTMLError)
@@ -30,8 +30,21 @@ RSpec.describe Google::Artwork::Crawler do
     end
 
     context "when artworks are not found" do
-      before { allow_any_instance_of(described_class).to receive(:artworks).and_return(nil) }
       subject(:result) { described_class.new(ARTIST_HTML_FILE_PATH).execute }
+      before do
+        allow_any_instance_of(described_class).to receive(:artworks).and_return(nil)
+      end
+
+      it "should raise an error" do
+        expect { result }.to raise_error(SerpapiChallenge::HTMLError)
+      end
+    end
+
+    context "when artwork links are not found" do
+      subject(:result) { described_class.new(ARTIST_HTML_FILE_PATH).execute }
+      before do
+        allow_any_instance_of(described_class).to receive(:artworks).and_return(double(css: []))
+      end
 
       it "should raise an error" do
         expect { result }.to raise_error(SerpapiChallenge::HTMLError)

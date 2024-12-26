@@ -28,6 +28,10 @@ module Google
         raise SerpapiChallenge::HTMLError unless document
         raise SerpapiChallenge::HTMLError unless artworks
 
+        artwork_links = artworks.css("a")
+
+        raise SerpapiChallenge::HTMLError if artwork_links&.empty?
+
         { artworks: [] }
       end
 
