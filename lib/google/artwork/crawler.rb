@@ -24,7 +24,7 @@ module Google
       end
 
       def execute
-        result = document
+        raise SerpapiChallenge::HTMLError unless document
 
         { artworks: [] }
       end

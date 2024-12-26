@@ -20,6 +20,16 @@ module SerpapiChallenge
     end
   end
 
+  class HTMLError < BaseError
+    def initialize
+      super
+    end
+
+    def description
+      "HTML Element not found"
+    end
+  end
+
   class ArtistError < BaseError
     def initialize
       super
